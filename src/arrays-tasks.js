@@ -313,8 +313,12 @@ function createNDimensionalArray(n, size) {
  *    flattenArray(['a', ['b', ['c', 'd'], 'e'], 'f']) => ['a', 'b', 'c', 'd', 'e', 'f']
  *    flattenArray([1, 2, 3, 4]) => [1, 2, 3, 4]
  */
-function flattenArray(/* nestedArray */) {
-  throw new Error('Not implemented');
+function flattenArray(nestedArray) {
+  return nestedArray.reduce(
+    (acc, item) =>
+      Array.isArray(item) ? acc.concat(flattenArray(item)) : acc.concat(item),
+    []
+  );
 }
 
 /**
@@ -568,7 +572,7 @@ function findLongestIncreasingSubsequence(nums) {
  *  propagateItemsByPositionIndex([ 1,2,3,4,5 ]) => [ 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-  return arr.flatMap((item, index) => Array(index + 1).fill(item));
+  return arr.flatMap((item, index) => Array(index + 1).fill(item)); // на каждой иттерации создаем подмассив длинной индекс и заполняем его айтем. а флэтмап выравнивает все до 1 массива
 }
 
 /**
@@ -584,8 +588,10 @@ function propagateItemsByPositionIndex(arr) {
  *    shiftArray(['a', 'b', 'c', 'd'], -1) => ['b', 'c', 'd', 'a']
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
-function shiftArray(/* arr, n */) {
-  throw new Error('Not implemented');
+function shiftArray(arr, n) {
+  const len = arr.length;
+  const shift = ((n % len) + len) % len;
+  return arr.slice(-shift).concat(arr.slice(0, -shift));
 }
 
 /**
@@ -601,8 +607,20 @@ function shiftArray(/* arr, n */) {
  *   sortDigitNamesByNumericOrder([ 'nine','eight','nine','eight' ]) => [ 'eight','eight','nine','nine']
  *   sortDigitNamesByNumericOrder([ 'one','one','one','zero' ]) => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const numArr = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+  return arr.sort((a, b) => numArr.indexOf(a) - numArr.indexOf(b));
 }
 
 /**
@@ -624,8 +642,19 @@ function sortDigitNamesByNumericOrder(/* arr */) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length === 0 || arr.length === 1) {
+    return arr;
+  }
+  let mid = arr.length / 2;
+  if (Number.isInteger(mid)) {
+    return arr.slice(mid).concat(arr.slice(0, mid));
+  }
+  mid = Math.ceil(mid);
+  return arr
+    .slice(mid)
+    .concat(arr[mid - 1])
+    .concat(arr.slice(0, mid - 1));
 }
 
 module.exports = {
