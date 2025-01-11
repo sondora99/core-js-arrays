@@ -368,8 +368,18 @@ function calculateBalance(arr) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  if (arr.length === 0) {
+    return [];
+  }
+  return arr.reduce((acc, item, index) => {
+    const chunkIndex = Math.floor(index / chunkSize);
+    if (!acc[chunkIndex]) {
+      acc[chunkIndex] = [];
+    }
+    acc[chunkIndex].push(item);
+    return acc;
+  }, []);
 }
 
 /**
@@ -401,7 +411,7 @@ function generateOdds(len) {
  *   getElementByIndices([[[ 1, 2, 3]]], [ 0, 0, 1 ]) => 2        (arr[0][0][1])
  */
 function getElementByIndices(arr, indices) {
-  return arr + indices;
+  return indices.reduce((acc, index) => acc[index], arr);
 }
 
 /**
@@ -449,8 +459,13 @@ function getFalsyValuesCount(arr) {
  *                              [0,0,0,1,0],
  *                              [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  const result = Array.from({ length: n }, () => Array(n).fill(0));
+  return result.map((item, index) => {
+    const temp = item;
+    temp[index] = 1;
+    return item;
+  });
 }
 
 /**
